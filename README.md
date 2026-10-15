@@ -20,6 +20,7 @@ Tick countdowns for your hitpoints and prayer regeneration.
 ## Display
 - Normal infobox with the HP orb / Prayer regeneration potion icon, or
 - **Transparent Infobox**: only the number. Hold Alt and drag it onto the orb.
+- Transparent Infobox text can use its own font (family, size, bold, italic) and outline, shadow or no outline.
 - Ticks, Seconds or Decimals, and a configurable color for each timer.
 
 ## Credits
