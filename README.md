@@ -11,6 +11,7 @@ Tick countdowns for your hitpoints and prayer regeneration.
 - Toggling Rapid Heal resets the timer (same timing as RuneLite's Regeneration Meter).
 - When overhealed it counts down to the next 1 HP decay instead, in a separate color. Useful for flicking Rapid Heal to keep overheal.
 - Can keep showing at full HP (on by default).
+- Optional: only show the timer while Rapid Heal is active.
 
 ## Prayer Regen Timer
 - Prayer doesn't regenerate on its own, so this only shows while a Prayer regeneration potion is active.
