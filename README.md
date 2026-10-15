@@ -2,6 +2,10 @@
 
 Tick countdowns for your hitpoints and prayer regeneration.
 
+![Hitpoints regen timer on the hitpoints orb](screenshot.png)
+
+*Hitpoints regen timer (in ticks) placed on the hitpoints orb with Transparent Infobox.*
+
 ## Hitpoints Regen Timer
 - Counts down to your next hitpoint: 100 ticks, or 50 ticks with Rapid Heal.
 - Toggling Rapid Heal resets the timer (same timing as RuneLite's Regeneration Meter).
