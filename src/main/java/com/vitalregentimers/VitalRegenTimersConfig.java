@@ -89,10 +89,22 @@ public interface VitalRegenTimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hpOnlyWithRapidHeal",
+		name = "Only With Rapid Heal",
+		description = "Only show the hitpoints timer while Rapid Heal is active",
+		position = 12,
+		section = hpRegenSection
+	)
+	default boolean hpOnlyWithRapidHeal()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hpDisplayFormat",
 		name = "HP Display Format",
 		description = "Ticks (game ticks), Seconds (whole), or Decimals (e.g. 29.4s)",
-		position = 12,
+		position = 13,
 		section = hpRegenSection
 	)
 	default DisplayFormat hpDisplayFormat()
@@ -104,7 +116,7 @@ public interface VitalRegenTimersConfig extends Config
 		keyName = "hpShowWhenFull",
 		name = "Show When HP Is Full",
 		description = "Keep showing the hitpoints timer when your hitpoints are full (useful for Rapid Heal flicking)",
-		position = 13,
+		position = 14,
 		section = hpRegenSection
 	)
 	default boolean hpShowWhenFull()
@@ -116,7 +128,7 @@ public interface VitalRegenTimersConfig extends Config
 		keyName = "hpShowOverhealDecay",
 		name = "Show Overheal Decay",
 		description = "When overhealed, show the countdown until your boosted hitpoints decay by 1",
-		position = 14,
+		position = 15,
 		section = hpRegenSection
 	)
 	default boolean hpShowOverhealDecay()
@@ -129,7 +141,7 @@ public interface VitalRegenTimersConfig extends Config
 		keyName = "hpRegenColor",
 		name = "HP Regen Color",
 		description = "Color of the hitpoints regen timer",
-		position = 15,
+		position = 16,
 		section = hpRegenSection
 	)
 	default Color hpRegenColor()
@@ -142,7 +154,7 @@ public interface VitalRegenTimersConfig extends Config
 		keyName = "hpDecayColor",
 		name = "HP Overheal Decay Color",
 		description = "Color of the hitpoints timer while overhealed (counting down to decay)",
-		position = 16,
+		position = 17,
 		section = hpRegenSection
 	)
 	default Color hpDecayColor()

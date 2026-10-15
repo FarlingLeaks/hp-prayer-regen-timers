@@ -181,6 +181,10 @@ public class VitalRegenTimersPlugin extends Plugin
 		{
 			return false;
 		}
+		if (config.hpOnlyWithRapidHeal() && !vitalRegenTracker.isRapidHealActive())
+		{
+			return false;
+		}
 		if (vitalRegenTracker.isOverhealed())
 		{
 			return config.hpShowOverhealDecay();

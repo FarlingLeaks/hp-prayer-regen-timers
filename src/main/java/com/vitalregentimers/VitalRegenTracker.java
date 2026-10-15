@@ -153,6 +153,14 @@ public class VitalRegenTracker
 	}
 
 	/**
+	 * @return true while the Rapid Heal prayer is active
+	 */
+	public boolean isRapidHealActive()
+	{
+		return client.isPrayerActive(Prayer.RAPID_HEAL);
+	}
+
+	/**
 	 * @return true while a Prayer regeneration potion is active
 	 */
 	public boolean isPrayerRegenActive()
