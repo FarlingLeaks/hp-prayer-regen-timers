@@ -10,7 +10,6 @@ import net.runelite.api.GameState;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.TextComponent;
 
 /**
  * Transparent (number-only) version of the hitpoints/prayer regen infobox,
@@ -26,7 +25,6 @@ public abstract class VitalRegenTextOverlay extends Overlay
 	private final Client client;
 	private final VitalRegenTimersConfig config;
 	private final RuneLiteConfig runeLiteConfig;
-	private final TextComponent textComponent = new TextComponent();
 
 	protected VitalRegenTextOverlay(Client client, VitalRegenTimersPlugin plugin,
 		VitalRegenTimersConfig config, RuneLiteConfig runeLiteConfig)
@@ -72,22 +70,51 @@ public abstract class VitalRegenTextOverlay extends Overlay
 		}
 
 		String text = getTimerText();
-		Font font = runeLiteConfig.infoboxFont().getFont().deriveFont((float) config.transparentFontSize());
+		Font font = config.useCustomFont()
+			? config.timerFont().getFont()
+			: runeLiteConfig.infoboxFont().getFont().deriveFont((float) config.transparentFontSize());
 		graphics.setFont(font);
 		FontMetrics metrics = graphics.getFontMetrics();
 
 		// Fixed width so the number doesn't shift while counting down
 		int boxWidth = getMaxTextWidth(metrics);
 		int x = (boxWidth - metrics.stringWidth(text)) / 2;
+		int y = metrics.getAscent();
 
-		textComponent.setText(text);
-		textComponent.setFont(font);
-		textComponent.setColor(getTimerColor());
-		textComponent.setOutline(runeLiteConfig.infoBoxTextOutline());
-		textComponent.setPosition(x, metrics.getAscent());
-		textComponent.render(graphics);
+		drawText(graphics, text, x, y, getTimerColor());
 
-		return new Dimension(boxWidth, metrics.getHeight());
+		return new Dimension(boxWidth + 1, metrics.getHeight() + 1);
+	}
+
+	private void drawText(Graphics2D graphics, String text, int x, int y, Color color)
+	{
+		VitalRegenTimersConfig.TextStyle style = config.textStyle();
+		if (style == VitalRegenTimersConfig.TextStyle.RUNELITE)
+		{
+			style = runeLiteConfig.infoBoxTextOutline()
+				? VitalRegenTimersConfig.TextStyle.OUTLINE
+				: VitalRegenTimersConfig.TextStyle.SHADOW;
+		}
+
+		graphics.setColor(Color.BLACK);
+		switch (style)
+		{
+			case OUTLINE:
+				graphics.drawString(text, x - 1, y);
+				graphics.drawString(text, x + 1, y);
+				graphics.drawString(text, x, y - 1);
+				graphics.drawString(text, x, y + 1);
+				break;
+			case SHADOW:
+				graphics.drawString(text, x + 1, y + 1);
+				break;
+			case NONE:
+			default:
+				break;
+		}
+
+		graphics.setColor(color);
+		graphics.drawString(text, x, y);
 	}
 
 	/**

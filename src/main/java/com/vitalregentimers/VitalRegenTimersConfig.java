@@ -8,6 +8,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.FontType;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
@@ -26,6 +27,24 @@ public interface VitalRegenTimersConfig extends Config
 		TICKS("Ticks"),
 		SECONDS("Seconds"),
 		DECIMALS("Decimals");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	enum TextStyle
+	{
+		RUNELITE("Same as RuneLite"),
+		OUTLINE("Outline"),
+		SHADOW("Shadow"),
+		NONE("None");
 
 		private final String name;
 
@@ -60,13 +79,49 @@ public interface VitalRegenTimersConfig extends Config
 	@ConfigItem(
 		keyName = "transparentFontSize",
 		name = "Transparent Font Size",
-		description = "Font size of the Transparent Infobox timers.",
+		description = "Font size of the Transparent Infobox timers (when Custom Font is off).",
 		position = 2,
 		section = displaySection
 	)
 	default int transparentFontSize()
 	{
 		return 16;
+	}
+
+	@ConfigItem(
+		keyName = "useCustomFont",
+		name = "Custom Font",
+		description = "Use the font below for the Transparent Infobox timers instead of RuneLite's infobox font",
+		position = 3,
+		section = displaySection
+	)
+	default boolean useCustomFont()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "timerFont",
+		name = "Font",
+		description = "Font, size, bold and italic for the Transparent Infobox timers (when Custom Font is on)",
+		position = 4,
+		section = displaySection
+	)
+	default FontType timerFont()
+	{
+		return FontType.REGULAR;
+	}
+
+	@ConfigItem(
+		keyName = "textStyle",
+		name = "Text Outline",
+		description = "Outline, shadow or nothing around the Transparent Infobox timer text",
+		position = 5,
+		section = displaySection
+	)
+	default TextStyle textStyle()
+	{
+		return TextStyle.RUNELITE;
 	}
 
 	@ConfigSection(
