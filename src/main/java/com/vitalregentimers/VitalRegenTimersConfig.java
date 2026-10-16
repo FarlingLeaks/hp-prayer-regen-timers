@@ -227,8 +227,8 @@ public interface VitalRegenTimersConfig extends Config
 	@ConfigItem(
 		keyName = "showPrayerRegenTimer",
 		name = "Show Prayer Regen Timer",
-		description = "While a Prayer regeneration potion is active, show a countdown until the next prayer point "
-			+ "(prayer does not regenerate on its own)",
+		description = "While a Prayer regeneration potion or Prayer enhance (Chambers of Xeric) is active, show a countdown "
+			+ "until the next prayer point (prayer does not regenerate on its own)",
 		position = 21,
 		section = prayerRegenSection
 	)

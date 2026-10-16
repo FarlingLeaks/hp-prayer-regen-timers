@@ -28,6 +28,10 @@ import net.runelite.client.eventbus.Subscribe;
  *   1 prayer point is restored every 12 ticks (7.2 seconds).
  * - The timer resyncs every time the game updates the potion varbit (once per restored point),
  *   the same approach used by the Prayer Regeneration Helper plugin.
+ * - Chambers of Xeric Prayer enhance restores 1 point every floor(500 / (floor(prayer level / 2) + 31))
+ *   ticks. Its varbit holds the remaining cycles, so the time left is cycles * rate and the time to
+ *   the next point is that modulo the rate. Timing taken from the Cox Additions plugin
+ *   (https://github.com/MoreBuchus/buchus-plugins, BSD 2-Clause License).
  */
 @Singleton
 public class VitalRegenTracker
@@ -48,6 +52,12 @@ public class VitalRegenTracker
 	public static final int PRAYER_REGEN_POTION_TICKS = 12;
 
 	private final Client client;
+
+	/**
+	 * Ticks left on the Chambers of Xeric Prayer enhance potion, counting down each game tick.
+	 * -1 when no Prayer enhance is active.
+	 */
+	private int prayerEnhanceTicks = -1;
 
 	/**
 	 * Game ticks since the last hitpoints regen/decay. Counts up to the current cycle length, then wraps.
@@ -86,6 +96,7 @@ public class VitalRegenTracker
 		ticksSinceHpRegen = 0;
 		hpRegenCycleTicks = HP_REGEN_TICKS;
 		prayerTicksUntilRegen = NO_PRAYER_REGEN;
+		prayerEnhanceTicks = -1;
 	}
 
 	@Subscribe
@@ -121,6 +132,20 @@ public class VitalRegenTracker
 				prayerTicksUntilRegen = NO_PRAYER_REGEN;
 			}
 		}
+		else if (event.getVarbitId() == VarbitID.RAIDS_PRAYERENHANCE_TIMER)
+		{
+			// The varbit holds the remaining Prayer enhance cycles and changes every time a point is
+			// restored, so the countdown resyncs on every change (same as the Cox Additions plugin).
+			prayerEnhanceTicks = event.getValue() > 0 ? event.getValue() * getPrayerEnhanceRate() : -1;
+		}
+	}
+
+	/**
+	 * @return ticks between Prayer enhance restores for the current prayer level
+	 */
+	private int getPrayerEnhanceRate()
+	{
+		return 500 / (client.getRealSkillLevel(Skill.PRAYER) / 2 + 31);
 	}
 
 	@Subscribe
@@ -132,6 +157,11 @@ public class VitalRegenTracker
 		if (prayerTicksUntilRegen >= 0)
 		{
 			prayerTicksUntilRegen--;
+		}
+
+		if (prayerEnhanceTicks >= 0)
+		{
+			prayerEnhanceTicks--;
 		}
 	}
 
@@ -148,6 +178,11 @@ public class VitalRegenTracker
 	 */
 	public int getPrayerTicksRemaining()
 	{
+		if (prayerTicksUntilRegen < 0 && isPrayerEnhanceActive())
+		{
+			// Counts rate -> 1, like the Cox Additions "Regen Cycle" timer
+			return prayerEnhanceTicks % getPrayerEnhanceRate() + 1;
+		}
 		// Counts 12 -> 1 (like Prayer Regeneration Helper) instead of 11 -> 0
 		return prayerTicksUntilRegen + 1;
 	}
@@ -165,7 +200,15 @@ public class VitalRegenTracker
 	 */
 	public boolean isPrayerRegenActive()
 	{
-		return prayerTicksUntilRegen >= 0;
+		return prayerTicksUntilRegen >= 0 || isPrayerEnhanceActive();
+	}
+
+	/**
+	 * @return true while a Chambers of Xeric Prayer enhance potion is active
+	 */
+	public boolean isPrayerEnhanceActive()
+	{
+		return prayerEnhanceTicks >= 0;
 	}
 
 	/**
