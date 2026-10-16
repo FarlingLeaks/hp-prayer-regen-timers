@@ -14,8 +14,9 @@ Tick countdowns for your hitpoints and prayer regeneration.
 - Optional: only show the timer while Rapid Heal is active.
 
 ## Prayer Regen Timer
-- Prayer doesn't regenerate on its own, so this only shows while a Prayer regeneration potion is active.
-- Counts down the 12 tick restore cycle and resyncs every time the potion restores a point.
+- Prayer doesn't regenerate on its own, so this only shows while a Prayer regeneration potion or a Chambers of Xeric Prayer enhance is active.
+- Prayer regeneration potion: counts down the 12 tick restore cycle and resyncs every time the potion restores a point.
+- Prayer enhance (Chambers of Xeric): counts down to the next restored point. The interval depends on your Prayer level.
 
 ## Display
 - Normal infobox with the HP orb / Prayer regeneration potion icon, or
@@ -27,3 +28,4 @@ Tick countdowns for your hitpoints and prayer regeneration.
 - **[Special Attack Timers](https://github.com/AnuVen/special-attack-timers)** by AnuVen (BSD 2-Clause): this plugin is based on its infobox/transparent overlay design, display formats and config layout.
 - **Regeneration Meter** from [RuneLite](https://github.com/runelite/runelite) (BSD 2-Clause): the hitpoints regen timing (100/50 ticks, Rapid Heal reset and the login/hop offset) follows this core plugin.
 - **[Prayer Regeneration Helper](https://github.com/Supalosa/prayer-regeneration-timer)** by Supalosa (BSD 2-Clause): the prayer timer resyncs on the Prayer regeneration potion varbit using the same approach.
+- **[Cox Additions](https://github.com/MoreBuchus/buchus-plugins)** by Buchus (BSD 2-Clause): the Prayer enhance restore interval and countdown use the same formula as its "Regen Cycle" Prayer enhance timer.
